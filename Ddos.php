@@ -1,9 +1,5 @@
 <?php
 error_reporting(0);
-// http://lwplxqzvmgu43uff.onion/viewtopic.php?pid=267990#p267990
-// https://github.com/zanyarjamal/zambie/blob/master/zambie.py
-// https://www.youtube.com/watch?v=wiXsJ96v0gE
-
 echo "
 
 ########################
